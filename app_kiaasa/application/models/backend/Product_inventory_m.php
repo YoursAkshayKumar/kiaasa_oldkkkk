@@ -14,13 +14,20 @@ class Product_inventory_m extends MY_Model {
 
 
     public function getProductByStoreId($store_id){
-        $this->db->select('product_master_id');
-        $this->db->get('pos_product_master_inventory');
-        $this->db->where('store_id', $store_id);
-        $query = $this->db->get()->row();
+        // $this->db->select('product_master_id');
+        // $this->db->get('pos_product_master_inventory');
+        // $this->db->where('store_id', $store_id);
+        // $query = $this->db->get()->row();
         // $row = $query->row_array();
-        var_dump($query); exit;
-        return $query;
+        // var_dump($query); exit;
+        // return $query;
+
+        $this->db->select('i.product_master_id');
+        $this->db->from('pos_product_master_inventory as i');
+        $this->db->where('i.store_id', $store_id);
+        $store = $this->db->get();
+        var_dump($store); exit; 
+        return $store->result_array();
 
 
 

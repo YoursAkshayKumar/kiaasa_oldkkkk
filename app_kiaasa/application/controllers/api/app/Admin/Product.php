@@ -50,17 +50,32 @@ class Product extends REST_Controller {
             $this->db->from('pos_product_master as p');
 
             if($this->input->post('store_id')){
-                $productIds =  $this->product_inventory_m->getProductByStoreId($this->input->post('store_id'));
-                var_dump($this->input->post('store_id')); exit;
+                
+                // $productIds =  $this->product_inventory_m->getProductByStoreId($this->input->post('store_id'));
                 // $productIds = [1];
+                $store_id = $this->input->post('store_id');
+
+                $this->db->select('i.product_master_id');
+                $this->db->from('pos_product_master_inventory as i');
+                $this->db->where('i.store_id =', $store_id);
+                $store = $this->db->get()->result_array();
+                var_dump($store); exit;
 
                 $this->db->where_in('p.id', $productIds);
+            }
+
+            
+            if($this->input->post('category_id')){
+                
+                $this->db->where('p.category_id', $this->input->post('category_id'));
+
+                
             }
 
 
 
 
-            $this->db->limit(5);
+            $this->db->limit(25);
             $this->db->order_by('p.id DESC');
     
             $products = $this->db->get()->result_array();
